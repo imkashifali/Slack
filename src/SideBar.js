@@ -1,0 +1,55 @@
+import React from "react";
+import "./SideBar.css";
+import { Avatar } from "@material-ui/core";
+import { selectUser } from "./features/userSlice";
+import { useSelector } from "react-redux";
+
+const SideBar = () => {
+  const user = useSelector(selectUser);
+  console.log(user);
+
+  const recentItem = (topic) => (
+    <div className="sidebar__Recent">
+      <span className="sidebar__Hash">#</span>
+      {topic}
+    </div>
+  );
+  return (
+    <div className="sidebar">
+      <div className="sidebar__Top">
+        <img
+          src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1440&q=80"
+          alt=""
+        />
+        <Avatar src={user.photoURL} className="sidebar__avatar">
+          {user.email[0]}
+        </Avatar>
+        <h2>{user.displayName}</h2>
+        <h4>{user.email}</h4>
+      </div>
+      {/* Second Section */}
+
+      <div className="sidebar__stats">
+        <div className="sidebar__stat">
+          <p>Who Viwed Now</p>
+          <p className="sidebar__statNumber">2.342</p>
+        </div>
+        <div className="sidebar__stat">
+          <p> Viwed on Post</p>
+          <p className="sidebar__statNumber">2.342</p>
+        </div>
+      </div>
+      {/* Third Section */}
+      <div className="sidebar__bottom">
+        <p> Recent</p>
+        {recentItem("ReactJs")}
+        {recentItem("NativeJs")}
+        {recentItem("MeanStack")}
+        {recentItem("MernStack")}
+        {recentItem("Python")}
+      </div>
+    </div>
+  );
+};
+
+export default SideBar;
