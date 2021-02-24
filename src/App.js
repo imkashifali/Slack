@@ -1,54 +1,20 @@
-import React, { useEffect } from "react";
-import "./App.css";
-import Header from "./Header.js";
-import SideBar from "./SideBar.js";
-import Widgets from "./Widgets.js";
-
-import Feed from "./Feed.js";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-
-import { selectUser, logout, login } from "./features/userSlice.js";
-import Login from "./Login";
-import { auth } from "./firebase.js";
-
-function App() {
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    auth.onAuthStateChanged((userAuth) => {
-      if (userAuth) {
-        // User is signed in.
-        dispatch(
-          login({
-            email: userAuth.email,
-            uid: userAuth.uid,
-            displayName: userAuth.displayName,
-            photoUrl: userAuth.photoUrl,
-          })
-        );
-      } else {
-        // No user is signed in.
-        dispatch(logout());
-      }
-    });
-  }, []);
-
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Header from "./components/Header.js";
+const App = () => {
   return (
     <div className="app">
-      <Header />
-      {!user ? (
-        <Login />
-      ) : (
-        <div className="app__body">
-          <SideBar />
-          <Feed />
-          <Widgets />
-        </div>
-      )}
+      <Router>
+        <>
+          <Switch>
+            <Route path="/" exact>
+              <Header />
+            </Route>
+          </Switch>
+        </>
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
