@@ -13,16 +13,24 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
-
+import { db } from "../firebase.js";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase.js";
 const Sidebar = () => {
+  const [channels] = useCollection(db.collection("rooms"));
+  // console.log(channels);
+  const [user] = useAuthState(auth);
+
   return (
     <SidebarContainer>
       <SidebarHeader>
         <SidebarInfo>
-          <h2>Slack Kashif Here</h2>
+          <h2>Slack</h2>
           <h3>
             <FiberManualRecordIcon />
-            Kashif Ali
+            {user?.displayName}
+            {/* Kashif Ali{" "} */}
           </h3>
         </SidebarInfo>
         <CreateIcon />
@@ -40,6 +48,9 @@ const Sidebar = () => {
       <SidebarOption Icon={ExpandMoreIcon} title="Show More" />
       <hr />
       <SidebarOption Icon={AddIcon} addChanellOption title="Add Channel" />
+      {channels?.docs.map((doc) => (
+        <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+      ))}
     </SidebarContainer>
   );
 };
